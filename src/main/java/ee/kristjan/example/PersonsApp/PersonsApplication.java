@@ -3,7 +3,7 @@ package ee.kristjan.example.PersonsApp;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-/* It will be back-end of our application */
+//Back-end side of our application
 @SpringBootApplication
 public class PersonsApplication {
 
