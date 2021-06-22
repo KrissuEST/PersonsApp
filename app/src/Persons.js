@@ -6,29 +6,79 @@ import { Link } from 'react-router-dom';
 
 class Persons extends Component {
 
+    idd = 3;  //id what will be changed
+
     //Structure of the packet what we will send to endpoint.
     emptyItem = {
-        id: '1',
-        name: 'Ants',
-        age: 50,
-        weight: 80.5,
-        height: 1.9
+        id : this.idd + 1,
+        age : this.age,
+        height : this.height,
+        name : this.name,
+        weight : this.weight
     }
-
-    //Props - you pass to component and not able to change those values
-    //Constructor - first method what will be called
+    
+    //Props - you pass component and not able to change those values.
+    //Constructor - first method what will be called.
     constructor(props) {
-        super(props)   //We are passing data to superclass, because we extend component
+        super(props)   //We are passing data to superclass, because we extend component.
 
         this.state = {  //Initate our state
-            isLoading : true,   //Won't show loading screen.
+            isLoading : false,   //Won't show loading screen.
             Persons : [],   //array
-            item: this.emptyItem
+            item : this.emptyItem
         }
+        //We need to bind it in construction or will be undefined function and 
+        //nothing will be done to that object.
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        console.log("Blaablaa1 siin: " + this.idd);
+    }
+
+    // //Find max id and print it out
+    // findMaxId(idd) {
+    //     max = this.idd;   //enne oli max = 0
+    //     $('.note-row').each(function() {
+    //         max = Math.max(this.idd, max);
+    //     });
+    // }
+
+    // //Find average number of numbers
+    // findAverageNumber() {
+    //     const sum = times.reduce((a,b) => (a+b)) / times.length;;
+    //     // const avg = (sum / times.length) || 0;
+    // }
+
+    //async - you send the request, you don't have to wait.
+    async handleSubmit(event) {   //JavaScript - event driven
+        const item = this.state.item;
+        
+        await fetch(`api/persons`, {
+            method : 'POST',
+            headers : {    //Passing different parameters to our request
+                'Accept' : 'application/json',
+                'Content-Type' : 'application/json'
+            },
+            body : JSON.stringify(item),   //stringify - converts JavaScript to JSON
+        });
+
+        event.peventDefault();   //To prevent - form submits itself
+        this.props.history.push("/persons");   //refreshing persons page
+        // console.log("Blaaaaa2 siin: " + this.id);
+    }
+
+    // For changing my inserted data
+    handleChange(event){
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+        let item = {...this.state.item};
+        item[name] = value;
+        this.setState({item});
+        // console.log(item);
     }
 
     //Remove method
-    async remove(id) {  //Receives id
+    async remove(id) {   //Receives id
         await fetch(`api/persons/${id}`, {   //call to api
             method : 'DELETE',
             headers : {
@@ -36,10 +86,10 @@ class Persons extends Component {
                 'Content-Type' : 'application/json'
             }
         }).then(() => {
-            //... - with 3 dots we Persons object what contains many elements in it
-            //filter - we itarate through all components what are inside Persons, we look for id
-            let updatedPersons = [...this.state.Persons].filter(i => i.id !== id);  //Type and value comparison
-            this.setState({Persons : updatedPersons}); //We update our list because we didn't do 2nd api call.
+            //... - with 3 dots Persons object what contains many elements in it.
+            //filter - we itarate through all components what are inside Persons, we look for id.
+            let updatedPersons = [...this.state.Persons].filter(i => i.id !== id);   //Type and value comparison.
+            this.setState({Persons : updatedPersons});   //We update our list because we didn't do 2nd api call.
         });
     }
 
@@ -51,8 +101,8 @@ class Persons extends Component {
     //Api call, async call - event driven programming.
     async componentDidMount() {
         
-        //We load everything to into a variable Persons
-        const responsePer = await fetch('/api/persons');
+        //We load everything to into a variable Persons.
+        const responsePer = await fetch('api/persons');
         const bodyPer = await responsePer.json();
         this.setState({Persons : bodyPer, isLoading : false});
     }
@@ -66,7 +116,7 @@ class Persons extends Component {
 
         let rows = 
             Persons.map( person => 
-                <tr>
+                <tr key={person.id}>
                     <td>{person.name}</td>
                     <td>{person.age} years</td>
                     <td>{person.weight} kg</td>
@@ -111,7 +161,7 @@ class Persons extends Component {
                         </FormGroup>
                     </Form>
                 </Container>
-
+            
             {' '}
             <Container>  {/* Datagrid to show all Persons */}
                 <h3>Persons list</h3>
@@ -126,7 +176,13 @@ class Persons extends Component {
                     <tbody>
                         {rows}
                     </tbody>
-
+                    <thead>
+                        <th widht="20%">{this.idd} people</th>   {/* nt nii {this.findMaxId(this.idd)} */}
+                        <th widht="10%">60</th>   {/* {this.findAverageNumber(this.idd)} */}
+                        <th>81.5</th>
+                        <th widht="20%">1.9333</th>
+                        <th widht="10%">Averages</th>
+                    </thead>
                 </Table>
             </Container>
             </div>
