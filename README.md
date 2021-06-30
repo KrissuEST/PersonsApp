@@ -1,13 +1,14 @@
 ## Projekti info
 
 Full stack projekt, mis on tehtud kasutades tehnoloogiaid React ja Spring Boot. <br>
-Samuti on kasutatud Bootstrap-i, MVC-d ja H2 andmebaasi. <br>
+Samuti on kasutatud Bootstrap-i, MVC-d, Project Lombok-i ja H2 andmebaasi. <br>
 Testisin projekti kasutades programmi Postman. <br>
 <br>
-**Home** leht annab natukene infot projekti kohta, **Persons** lehel saab inimest koos andmetega lisada ja kuvab andmeid. <br>
-Hetkel saab lisada vaid ühe inimese ja kui uuesti väljad täita, siis muudetakse viimase lisatud inimese kirje andmed. <br>
-Samuti saab igat inimest kustutada. Kirje lisamisel, muutmisel ja kustutamisel toimuvad ka muutused H2 andmebaasis. <br>
-See rida kus on kirjas Averages, seal on lisatud vaid näiteandmed. Kahjuks ei õnnestunud realiseerida 3 viimast ülesannet: <br>
+**Home** leht annab natukene infot projekti kohta, **Persons** lehel saab inimest koos andmetega lisada ja <br>
+kuvab andmeid. Hetkel saab lisada vaid ühe inimese ja kui uuesti väljad täita, siis muudetakse viimase <br>
+lisatud inimese kirje andmed. Samuti saab igat inimest kustutada. Kirje lisamisel, muutmisel ja kustutamisel <br>
+toimuvad ka muutused H2 andmebaasis. See rida kus on kirjas Averages, seal on lisatud vaid näidisandmed. <br>
+Kahjuks ei õnnestunud realiseerida kolme viimast ülesannet: <br>
 1. Keskmiste arvutamist.
 2. Kuvada viimane ehk suurim Id.
 3. Kirje kustutamisel peaksid ülejäänud Id-d muutuma.
