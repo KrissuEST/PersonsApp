@@ -5,7 +5,7 @@ import App from './App.js';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
 
-//async - you send a request and you don't have to wait...
+//Front-end side of our application
 ReactDOM.render(
     <React.StrictMode>
         <App />

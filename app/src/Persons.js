@@ -4,6 +4,7 @@ import './App.css';
 import { Table,Container,Input,Button,Label,FormGroup,Form } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
+//Persons page
 class Persons extends Component {
 
     idd = 3;  //id what will be changed
@@ -27,11 +28,11 @@ class Persons extends Component {
             Persons : [],   //array
             item : this.emptyItem
         }
-        //We need to bind it in construction or will be undefined function and 
+        //We need to bind it in construction or it will be undefined function and 
         //nothing will be done to that object.
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        console.log("Blaablaa1 siin: " + this.idd);
+        // console.log("Blaablaa1 siin: " + this.idd);
     }
 
     // //Find max id and print it out
@@ -48,7 +49,8 @@ class Persons extends Component {
     //     // const avg = (sum / times.length) || 0;
     // }
 
-    //async - you send the request, you don't have to wait.
+    //async - you send the request and you don't have to wait.
+    //Function for submitting data
     async handleSubmit(event) {   //JavaScript - event driven
         const item = this.state.item;
         
@@ -62,11 +64,11 @@ class Persons extends Component {
         });
 
         event.peventDefault();   //To prevent - form submits itself
-        this.props.history.push("/persons");   //refreshing persons page
+        this.props.history.push("/persons");   //It's for refreshing persons page
         // console.log("Blaaaaa2 siin: " + this.id);
     }
 
-    // For changing my inserted data
+    //Function for changing my already inserted data
     handleChange(event){
         const target = event.target;
         const value = target.value;
@@ -77,7 +79,7 @@ class Persons extends Component {
         // console.log(item);
     }
 
-    //Remove method
+    //Function to remove data from database
     async remove(id) {   //Receives id
         await fetch(`api/persons/${id}`, {   //call to api
             method : 'DELETE',
@@ -99,6 +101,8 @@ class Persons extends Component {
 
     //Don't update state directly, use setState, otherwise devastating results.
     //Api call, async call - event driven programming.
+
+    //Function to load all data from database
     async componentDidMount() {
         
         //We load everything to into a variable Persons.
@@ -176,8 +180,8 @@ class Persons extends Component {
                     <tbody>
                         {rows}
                     </tbody>
-                    <thead>
-                        <th widht="20%">{this.idd} people</th>   {/* nt nii {this.findMaxId(this.idd)} */}
+                    <thead>   {/* Datagrid to show results */}
+                        <th widht="20%">{this.idd} people</th>   {/* for example {this.findMaxId(this.idd)} */}
                         <th widht="10%">60</th>   {/* {this.findAverageNumber(this.idd)} */}
                         <th>81.5</th>
                         <th widht="20%">1.9333</th>

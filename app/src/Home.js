@@ -4,6 +4,7 @@ import AppNav from './AppNav';
 import ReactLogo from './react.png';
 import SpringBootLogo from './SpringBootLogo.png';
 
+//Home page
 class Home extends Component {
     state = {  }
     render() { 
