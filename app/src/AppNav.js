@@ -4,6 +4,7 @@ import { Nav,Navbar,NavItem,NavbarBrand,NavLink } from 'reactstrap';
 //Navigation bar
 class AppNav extends Component {
     state = {  }
+    
     render() {
         return (
           <div>
@@ -12,6 +13,9 @@ class AppNav extends Component {
                 <Nav className="ml-auto" navbar>
                   <NavItem>
                     <NavLink href="/">Home</NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink href="/nationalities">Nationalities</NavLink>
                   </NavItem>
                   <NavItem>
                     <NavLink href="/persons">Persons</NavLink>

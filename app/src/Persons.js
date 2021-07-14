@@ -1,38 +1,58 @@
 import React, { Component } from 'react';
 import AppNav from './AppNav';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import './App.css';
 import { Table,Container,Input,Button,Label,FormGroup,Form } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import Moment from 'react-moment';
 
 //Persons page
 class Persons extends Component {
 
-    idd = 3;  //id what will be changed
+    //Data, with what we are working.
+    // {
+    //     "id": 1,
+    //     "name": "Priit",
+    //     "age": 50,
+    //     "personDate": "2019-06-16T17:00:00Z",
+    //     "weight": 80.3,
+    //     "height": 1.8,
+    //     "nationality": {
+    //         "id": 1,
+    //         "name": "Estonian"
+    //     }
+    // },
 
     //Structure of the packet what we will send to endpoint.
+    //Hardcoded
     emptyItem = {
-        id : this.idd + 1,
+        id : 4,
         age : this.age,
         height : this.height,
+        personDate : new Date(),   //Today's date
         name : this.name,
-        weight : this.weight
+        weight : this.weight,
+        nationality : {id:1, name: 'English'}
     }
     
     //Props - you pass component and not able to change those values.
-    //Constructor - first method what will be called.
+    //Constructor - first method what will be called upon object creation.
     constructor(props) {
         super(props)   //We are passing data to superclass, because we extend component.
 
         this.state = {  //Initate our state
             isLoading : false,   //Won't show loading screen.
-            Persons : [],   //array
+            Nationalities : [],
+            Persons : [],   //array of persons
+            date : new Date(),
             item : this.emptyItem
         }
         //We need to bind it in construction or it will be undefined function and 
         //nothing will be done to that object.
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);  //bind this object handlesubmit, connecting dots
         this.handleChange = this.handleChange.bind(this);
-        // console.log("Blaablaa1 siin: " + this.idd);
+        this.handleDateChange = this.handleDateChange.bind(this);
     }
 
     // //Find max id and print it out
@@ -49,8 +69,8 @@ class Persons extends Component {
     //     // const avg = (sum / times.length) || 0;
     // }
 
-    //async - you send the request and you don't have to wait.
     //Function for submitting data
+    //async - sending data back to database
     async handleSubmit(event) {   //JavaScript - event driven
         const item = this.state.item;
         
@@ -63,13 +83,13 @@ class Persons extends Component {
             body : JSON.stringify(item),   //stringify - converts JavaScript to JSON
         });
 
-        event.peventDefault();   //To prevent - form submits itself
+        event.peventDefault();   //To prevent - form submits itself, prevents all auto submission
         this.props.history.push("/persons");   //It's for refreshing persons page
-        // console.log("Blaaaaa2 siin: " + this.id);
+        //console.log("Blabla2 siin: " + this.id);
     }
 
     //Function for changing my already inserted data
-    handleChange(event){
+    handleChange(event) {   //We pass the event
         const target = event.target;
         const value = target.value;
         const name = target.name;
@@ -77,6 +97,13 @@ class Persons extends Component {
         item[name] = value;
         this.setState({item});
         // console.log(item);
+    }
+
+    //Function for changing date
+    handleDateChange(date) {
+        let item = {...this.state.item};
+        item.personDate = date;
+        this.setState({item});
     }
 
     //Function to remove data from database
@@ -88,22 +115,30 @@ class Persons extends Component {
                 'Content-Type' : 'application/json'
             }
         }).then(() => {
-            //... - with 3 dots Persons object what contains many elements in it.
+            //... - Persons object what contains many elements in it, that's how we pass it.
             //filter - we itarate through all components what are inside Persons, we look for id.
             let updatedPersons = [...this.state.Persons].filter(i => i.id !== id);   //Type and value comparison.
             this.setState({Persons : updatedPersons});   //We update our list because we didn't do 2nd api call.
         });
     }
 
+    // //Function to edit data
+    // async edit(id) {
+
+    // }
+
     //async - We make call and don't have to wait response and 
     //can do other things until result is ready.
     //When result is ready then React will update the dom.
-
-    //Don't update state directly, use setState, otherwise devastating results.
     //Api call, async call - event driven programming.
 
     //Function to load all data from database
     async componentDidMount() {
+
+        const responseNat = await fetch('api/nationalities');
+        const bodyNat = await responseNat.json();
+        //Do not update state directly, always use setState, otherwise devastating results.
+        this.setState({Nationalities : bodyNat, isLoading : false});  //false - loading is over, we received data
         
         //We load everything to into a variable Persons.
         const responsePer = await fetch('api/persons');
@@ -113,19 +148,33 @@ class Persons extends Component {
 
     render() { 
         const title = <h3>Add Person</h3>;
-        const {Persons,isLoading} = this.state;
+        const {Nationalities} = this.state;
+        const {Persons,isLoading} = this.state;   //state mode
 
         if (isLoading)
             return(<div>Loading....</div>)
 
-        let rows = 
+        let optionListNat  =
+            Nationalities.map( (nationality) =>
+                <option value={nationality.id} key={nationality.id}>
+                            {nationality.name}
+                </option>
+            )
+
+        let rowsPersons = 
             Persons.map( person => 
-                <tr key={person.id}>
+                <tr key={person.id}>   {/* Id - to make it unique for this application */}
                     <td>{person.name}</td>
                     <td>{person.age} years</td>
                     <td>{person.weight} kg</td>
                     <td>{person.height} m</td>
-                    <td><Button size="sm" color="danger" onClick={() => this.remove(person.id)}>Delete</Button></td>
+                    <td><Moment date = {person.personDate} format="YYYY/MM/DD"/></td>
+                    <td>{person.nationality.name}</td>
+                    {/* <td><Button size="sm" color="danger" onClick={() => this.remove(person.id)}>Delete</Button></td> */}
+                    <FormGroup>
+                        <Button size="sm" color="danger" onClick={() => this.remove(person.id)}>Delete</Button>{' '}
+                        <Button size="sm" color="info" tag={Link} to="/">Edit</Button>
+                    </FormGroup>
                 </tr>
             )
 
@@ -148,6 +197,18 @@ class Persons extends Component {
                         </FormGroup>
 
                         <FormGroup>
+                            <Label for="nationality">Nationality</Label>
+                            <select onChange={this.handleChange}>
+                                {optionListNat}
+                            </select>
+                        </FormGroup>
+
+                        <FormGroup>
+                            <Label for="date">Date</Label>
+                            <DatePicker selected={this.state.item.personDate} onChange={this.handleDateChange}/>
+                        </FormGroup>
+
+                        <FormGroup>
                             <Label for="weight">Weight</Label>
                             <Input type="number" name="weight" id="weight"  
                             onChange={this.handleChange} autoComplete="weight"/>
@@ -166,29 +227,33 @@ class Persons extends Component {
                     </Form>
                 </Container>
             
-            {' '}
-            <Container>  {/* Datagrid to show all Persons */}
-                <h3>Persons list</h3>
-                <Table className="mt-4">
-                    <thead>
-                        <th widht="20%">Name</th>
-                        <th widht="10%">Age</th>
-                        <th>Weight</th>
-                        <th widht="20%">Height</th>
-                        <th widht="10%">Action</th>
-                    </thead>
-                    <tbody>
-                        {rows}
-                    </tbody>
-                    <thead>   {/* Datagrid to show results */}
-                        <th widht="20%">{this.idd} people</th>   {/* for example {this.findMaxId(this.idd)} */}
-                        <th widht="10%">60</th>   {/* {this.findAverageNumber(this.idd)} */}
-                        <th>81.5</th>
-                        <th widht="20%">1.9333</th>
-                        <th widht="10%">Averages</th>
-                    </thead>
-                </Table>
-            </Container>
+                {' '}
+                <Container>  {/* Datagrid to show all Persons */}
+                    <h3>Persons list</h3>
+                    <Table className="mt-4">
+                        <thead>
+                            <th widht="20%">Name</th>
+                            <th widht="10%">Age</th>
+                            <th>Weight</th>
+                            <th widht="20%">Height</th>
+                            <th widht="30%">Date</th>
+                            <th widht="20%">Nationality</th>
+                            <th widht="10%">Action</th>
+                        </thead>
+                        <tbody>
+                            {rowsPersons}
+                        </tbody>
+                        <thead>   {/* Datagrid to show results */}
+                            <th widht="20%">4 people</th>   {/* for example {this.findMaxId(this.idd)} */}
+                            <th widht="10%">60</th>   {/* {this.findAverageNumber(this.idd)} */}
+                            <th>81.5</th>
+                            <th widht="20%">1.9333</th>
+                            <th widht="30%">Latest date</th>
+                            <th widht="20%">3 of them</th>
+                            <th widht="10%">Averages</th>
+                        </thead>
+                    </Table>
+                </Container>
             </div>
         );
     }

@@ -26,20 +26,20 @@ public class PersonsController {
 	private PersonsRepository personsRepository;
 
 	//GetMapping - get all the records from DB
-	@GetMapping("/persons")    //Working!
+	@GetMapping("/persons")
 	List<Person> getPersons() {
 		return personsRepository.findAll();
 	}
 	
-	//Delete DB record by id, delete person
-	@DeleteMapping("/persons/{id}")   //Working!
+	//Delete person by id
+	@DeleteMapping("/persons/{id}")
 	ResponseEntity<?> deletePerson(@PathVariable Long id) {
 		personsRepository.deleteById(id);
 		return ResponseEntity.ok().build();
 	}
 	
 	//POST request, add new person
-	@PostMapping("/persons")    //Working!
+	@PostMapping("/persons")
 	ResponseEntity<Person> createPerson(@Validated @RequestBody Person person) throws URISyntaxException {
 		Person result = personsRepository.save(person);
 		return ResponseEntity.created(new URI("/api/persons" + result.getId())).body(result);

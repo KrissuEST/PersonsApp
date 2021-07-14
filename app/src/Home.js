@@ -7,6 +7,7 @@ import SpringBootLogo from './SpringBootLogo.png';
 //Home page
 class Home extends Component {
     state = {  }
+    
     render() { 
         return ( 
             <div>
