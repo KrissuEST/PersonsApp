@@ -4,6 +4,7 @@ import './index.css';
 import App from './App.js';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.css';
+// import './styles/styles.scss';   //new for WeatherApp
 
 //Front-end side of our application
 ReactDOM.render(

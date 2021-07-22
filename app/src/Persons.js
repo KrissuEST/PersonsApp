@@ -7,7 +7,8 @@ import { Table,Container,Input,Button,Label,FormGroup,Form } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 
-//Persons page
+//https://codetoart.com/blog/reactjs-2-ways-to-create-react-components
+//In PersonsApp project with more code, I use 2) Class Components.
 class Persons extends Component {
 
     //Data, with what we are working.
