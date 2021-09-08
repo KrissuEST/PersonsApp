@@ -1,15 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;600&display=swap');
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+// * {
+//   margin: 0;
+//   padding: 0;
+//   box-sizing: border-box;
+// }
 
-html {
-  font-size: 62.5%;
-  
-}
+// html {
+//   // font-size: 62.5%;  //previous
+//   background-color: rgba(134, 34, 34, 0.75);
+//   margin-bottom: 65px;
+//   // font-size: 100%;
+// }
 
 body {
   font-weight: 400;
@@ -21,14 +23,14 @@ body {
   background-color: $colour-1;
 }
 
-a:link, a:visited {
-  color: $colour-2;
-  text-decoration: none;
-}
+// a:link, a:visited {
+//   color: $colour-2;
+//   text-decoration: none;
+// }
 
-a:hover, a:active {
-  color: $colour-1;
-}
+// a:hover, a:active {
+//   color: $colour-1;
+// }
 
 button {
   background-color: transparent;

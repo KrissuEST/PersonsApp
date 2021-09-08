@@ -15,5 +15,5 @@ const WeatherSearch = () => {
         </div>
     )
 }
- 
+
 export default WeatherSearch

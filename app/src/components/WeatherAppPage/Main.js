@@ -9,8 +9,7 @@ import WeatherData from "./WeatherData"
 import Context from "./Context"
 import Error from "./Error"
 import DateTime from "./DateTime"
-import Footer from "./Layout/Footer"
-// import "../../styles/styles.scss"   //new for WeatherApp
+// import Footer from "./Layout/Footer"
 
 //functional components - React way of doing things
 //Big square is main component
@@ -21,8 +20,8 @@ const Main = () => {
     const [city, setCity] = useState()
     const [error, setError] = useState()
     
-    const api_call = async e => {
-        e.preventDefault()   //page doesen't refresh when the form gets submitted
+    const api_call = async e => {   //e - event object in JavaScript
+        e.preventDefault()   //Because of that no full page refresh every time.
         const location = e.target.elements.location.value
         if (!location) {
             return setError("Please enter the name of the city."), setWeather(null), setWeather2(null), setWeather3(null)
@@ -30,8 +29,12 @@ const Main = () => {
         //Default behaviour of any webpage is that it's going through a refresh whenever a form gets submitted.
 
         //My personal API key when I created an account at https://openweathermap.org/
+        const API_KEY = "6fbfb8e045f49f94635c316b80948559"   //It's not secure way to do it!
+
         //For security, api key comes from .env file, what is gitignored.
-        const API_KEY = process.env.REACT_APP_SECRET_KEY   //Best is to put all api key logic to back-end
+        // const API_KEY = process.env.REACT_APP_SECRET_KEY   //This is my more secure solution here!
+        //In the end, best way is to put all api key logic to back-end.
+
         //``- inject variables inside the string
         const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEY}&units=metric`
         const request = axios.get(url)
@@ -43,7 +46,7 @@ const Main = () => {
         setError(null)
     }
     // weather && console.log(weather);
-
+    
     return (
         <div className="main">
             <Header/>
@@ -55,7 +58,7 @@ const Main = () => {
                     { weather && weather2 && weather3 && <WeatherData/> }   {/* If sentence here */}
                     { error && <Error error={error}/> }
                 </Context.Provider>
-                <Footer/>
+                {/* <Footer/> */}
             </Content>
         </div>
     )

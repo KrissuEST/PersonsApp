@@ -1,6 +1,6 @@
 .weather-data {
   text-align: center;
-  margin-top: 3rem;
+  margin-top: 3rem;   //location of text: Weather info for ...
 
   &__city {
     color: $colour-2;
@@ -10,7 +10,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 5rem;
+    margin-top: 5rem;    //moving data text
     @include respond(tablet) {
       margin-top: 2rem;
     }
@@ -35,7 +35,7 @@
 
   &__value {
     color: $colour-2;
-    font-size: 4rem;
+    font-size: 3rem;   //4rem; was before
     line-height: 0.6;
     @include respond(smallPhone) {
       font-size: 3rem;

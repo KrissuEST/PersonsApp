@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import AppNav from './AppNav';
+import AppNav from '../AppNav';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import './App.css';
 import { Table,Container,Input,Button,Label,FormGroup,Form } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
+import PersonsService from '../components/services/PersonsService';
 
 //https://codetoart.com/blog/reactjs-2-ways-to-create-react-components
 //In PersonsApp project with more code, I use 2) Class Components.
@@ -42,6 +43,7 @@ class Persons extends Component {
     constructor(props) {
         super(props)   //We are passing data to superclass, because we extend component.
 
+         //Initial states here. Old.
         this.state = {  //Initate our state
             isLoading : false,   //Won't show loading screen.
             Nationalities : [],
@@ -49,6 +51,14 @@ class Persons extends Component {
             date : new Date(),
             item : this.emptyItem
         }
+
+        this.addPerson = this.addPerson.bind(this);
+
+        // //New
+        // this.state = {
+        //     Persons : []
+        // }
+        
         //We need to bind it in construction or it will be undefined function and 
         //nothing will be done to that object.
         this.handleSubmit = this.handleSubmit.bind(this);  //bind this object handlesubmit, connecting dots
@@ -141,11 +151,17 @@ class Persons extends Component {
         //Do not update state directly, always use setState, otherwise devastating results.
         this.setState({Nationalities : bodyNat, isLoading : false});  //false - loading is over, we received data
         
+        //Do it in other new way.
+        // PersonsService.getEmployees().then((res) => {
+        //     this.setState({ Persons : res.data });
+        // });
+
         //We load everything to into a variable Persons.
         const responsePer = await fetch('api/persons');
         const bodyPer = await responsePer.json();
         this.setState({Persons : bodyPer, isLoading : false});
     }
+    
 
     render() { 
         const title = <h3>Add Person</h3>;
@@ -183,6 +199,9 @@ class Persons extends Component {
             <div>
                 <AppNav/>
                 <Container>
+                    <div className = "row">
+                        <button className="btn btn-primary" onClick={this.addPerson}> Add Person</button>
+                    </div>
                     {title}
                     <Form className="col-md-4 mb-3" onSubmit={this.handleSubmit}>
                         <FormGroup>

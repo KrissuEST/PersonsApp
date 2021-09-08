@@ -5,5 +5,5 @@ const Content = props => (
         {props.children}
     </div>
 )
- 
+
 export default Content
